@@ -1,0 +1,14 @@
+C:\Lab1_CreationalPatterns\bin\Debug\net10.0\Lab1_CreationalPatterns.exe
+C:\Lab1_CreationalPatterns\bin\Debug\net10.0\Lab1_CreationalPatterns.deps.json
+C:\Lab1_CreationalPatterns\bin\Debug\net10.0\Lab1_CreationalPatterns.runtimeconfig.json
+C:\Lab1_CreationalPatterns\bin\Debug\net10.0\Lab1_CreationalPatterns.dll
+C:\Lab1_CreationalPatterns\bin\Debug\net10.0\Lab1_CreationalPatterns.pdb
+C:\Lab1_CreationalPatterns\obj\Debug\net10.0\Lab1_CreationalPatterns.GeneratedMSBuildEditorConfig.editorconfig
+C:\Lab1_CreationalPatterns\obj\Debug\net10.0\Lab1_CreationalPatterns.AssemblyInfoInputs.cache
+C:\Lab1_CreationalPatterns\obj\Debug\net10.0\Lab1_CreationalPatterns.AssemblyInfo.cs
+C:\Lab1_CreationalPatterns\obj\Debug\net10.0\Lab1_CreationalPatterns.csproj.CoreCompileInputs.cache
+C:\Lab1_CreationalPatterns\obj\Debug\net10.0\Lab1_CreationalPatterns.dll
+C:\Lab1_CreationalPatterns\obj\Debug\net10.0\refint\Lab1_CreationalPatterns.dll
+C:\Lab1_CreationalPatterns\obj\Debug\net10.0\Lab1_CreationalPatterns.pdb
+C:\Lab1_CreationalPatterns\obj\Debug\net10.0\Lab1_CreationalPatterns.genruntimeconfig.cache
+C:\Lab1_CreationalPatterns\obj\Debug\net10.0\ref\Lab1_CreationalPatterns.dll
