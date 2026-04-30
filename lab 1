@@ -1,0 +1,342 @@
+#include <iostream>
+#include <string>
+#include <vector>
+
+using namespace std;
+
+// ========== 1. Одинак (Singleton) ==========
+class Logger {
+private:
+    static Logger* instance;
+    Logger() {
+        cout << "[LOG] Система логування запущена" << endl;
+    }
+    
+public:
+    static Logger* get() {
+        if (!instance) {
+            instance = new Logger();
+        }
+        return instance;
+    }
+    
+    void log(string msg) {
+        cout << "[LOG] " << msg << endl;
+    }
+};
+Logger* Logger::instance = nullptr;
+
+// ========== 2. Фабричний метод (Factory Method) ==========
+class Document {
+public:
+    virtual void open() = 0;
+    virtual ~Document() {}
+};
+
+class PDFDoc : public Document {
+public:
+    void open() override {
+        cout << "Відкриваємо PDF документ" << endl;
+    }
+};
+
+class WordDoc : public Document {
+public:
+    void open() override {
+        cout << "Відкриваємо Word документ" << endl;
+    }
+};
+
+class App {
+public:
+    virtual Document* createDoc() = 0;
+    virtual ~App() {}
+    
+    void openDocument() {
+        Document* doc = createDoc();
+        doc->open();
+        delete doc;
+    }
+};
+
+class PDFApp : public App {
+public:
+    Document* createDoc() override {
+        return new PDFDoc();
+    }
+};
+
+class WordApp : public App {
+public:
+    Document* createDoc() override {
+        return new WordDoc();
+    }
+};
+
+// ========== 3. Абстрактна фабрика (Abstract Factory) ==========
+class Chair {
+public:
+    virtual void sit() = 0;
+    virtual ~Chair() {}
+};
+
+class Table {
+public:
+    virtual void put() = 0;
+    virtual ~Table() {}
+};
+
+class ClassicChair : public Chair {
+public:
+    void sit() override {
+        cout << "Сидимо на класичному стільці" << endl;
+    }
+};
+
+class ModernChair : public Chair {
+public:
+    void sit() override {
+        cout << "Сидимо на сучасному стільці" << endl;
+    }
+};
+
+class ClassicTable : public Table {
+public:
+    void put() override {
+        cout << "Ставимо на класичний стіл" << endl;
+    }
+};
+
+class ModernTable : public Table {
+public:
+    void put() override {
+        cout << "Ставимо на сучасний стіл" << endl;
+    }
+};
+
+class FurnitureFactory {
+public:
+    virtual Chair* createChair() = 0;
+    virtual Table* createTable() = 0;
+    virtual ~FurnitureFactory() {}
+};
+
+class ClassicFurniture : public FurnitureFactory {
+public:
+    Chair* createChair() override { return new ClassicChair(); }
+    Table* createTable() override { return new ClassicTable(); }
+};
+
+class ModernFurniture : public FurnitureFactory {
+public:
+    Chair* createChair() override { return new ModernChair(); }
+    Table* createTable() override { return new ModernTable(); }
+};
+
+// ========== 4. Будівельник (Builder) ==========
+class Burger {
+private:
+    string size;
+    bool cheese;
+    bool bacon;
+    bool lettuce;
+    
+public:
+    class Builder {
+    private:
+        string size = "medium";
+        bool cheese = false;
+        bool bacon = false;
+        bool lettuce = false;
+        
+    public:
+        Builder& setSize(string s) {
+            size = s;
+            return *this;
+        }
+        
+        Builder& addCheese() {
+            cheese = true;
+            return *this;
+        }
+        
+        Builder& addBacon() {
+            bacon = true;
+            return *this;
+        }
+        
+        Builder& addLettuce() {
+            lettuce = true;
+            return *this;
+        }
+        
+        Burger build() {
+            return Burger(size, cheese, bacon, lettuce);
+        }
+    };
+    
+    Burger(string s, bool c, bool b, bool l) 
+        : size(s), cheese(c), bacon(b), lettuce(l) {}
+    
+    void show() {
+        cout << "Бургер " << size << " з: ";
+        if (cheese) cout << "сир ";
+        if (bacon) cout << "бекон ";
+        if (lettuce) cout << "салат ";
+        cout << endl;
+    }
+};
+
+// ========== 5. Прототип (Prototype) ==========
+class Monster {
+protected:
+    string name;
+    int hp;
+    int dmg;
+    
+public:
+    Monster(string n, int h, int d) : name(n), hp(h), dmg(d) {}
+    
+    virtual Monster* clone() = 0;
+    virtual ~Monster() {}
+    
+    void print() {
+        cout << name << " (HP:" << hp << ", DMG:" << dmg << ")" << endl;
+    }
+};
+
+class Zombie : public Monster {
+public:
+    Zombie() : Monster("Зомбі", 50, 10) {}
+    Monster* clone() override {
+        return new Zombie(*this);
+    }
+};
+
+class Skeleton : public Monster {
+public:
+    Skeleton() : Monster("Скелет", 40, 12) {}
+    Monster* clone() override {
+        return new Skeleton(*this);
+    }
+};
+
+// ========== 6. Проста фабрика (Simple Factory) ==========
+class Animal {
+public:
+    virtual void sound() = 0;
+    virtual ~Animal() {}
+};
+
+class Dog : public Animal {
+public:
+    void sound() override {
+        cout << "Гав-гав!" << endl;
+    }
+};
+
+class Cat : public Animal {
+public:
+    void sound() override {
+        cout << "Мяу-мяу!" << endl;
+    }
+};
+
+class AnimalFactory {
+public:
+    Animal* create(string type) {
+        if (type == "dog") return new Dog();
+        if (type == "cat") return new Cat();
+        return nullptr;
+    }
+};
+
+// ========== ГОЛОВНА ФУНКЦІЯ ==========
+int main() {
+    cout << "\n========================================" << endl;
+    cout << "Лабораторна робота: породжувальні патерни" << endl;
+    cout << "========================================\n" << endl;
+    
+    // 1. Одинак
+    cout << "1. Одинак (Singleton):" << endl;
+    Logger* log1 = Logger::get();
+    Logger* log2 = Logger::get();
+    log1->log("Запуск програми");
+    cout << "Чи один об'єкт? " << (log1 == log2 ? "Так" : "Ні") << "\n" << endl;
+    
+    // 2. Фабричний метод
+    cout << "2. Фабричний метод (Factory Method):" << endl;
+    App* app = new PDFApp();
+    app->openDocument();
+    delete app;
+    
+    app = new WordApp();
+    app->openDocument();
+    delete app;
+    cout << endl;
+    
+    // 3. Абстрактна фабрика
+    cout << "3. Абстрактна фабрика (Abstract Factory):" << endl;
+    FurnitureFactory* factory = new ClassicFurniture();
+    Chair* chair = factory->createChair();
+    Table* table = factory->createTable();
+    chair->sit();
+    table->put();
+    delete chair;
+    delete table;
+    delete factory;
+    
+    factory = new ModernFurniture();
+    chair = factory->createChair();
+    table = factory->createTable();
+    chair->sit();
+    table->put();
+    delete chair;
+    delete table;
+    delete factory;
+    cout << endl;
+    
+    // 4. Будівельник
+    cout << "4. Будівельник (Builder):" << endl;
+    Burger myBurger = Burger::Builder()
+        .setSize("великий")
+        .addCheese()
+        .addBacon()
+        .build();
+    myBurger.show();
+    cout << endl;
+    
+    // 5. Прототип
+    cout << "5. Прототип (Prototype):" << endl;
+    Zombie* zombieSample = new Zombie();
+    Skeleton* skeletonSample = new Skeleton();
+    
+    vector<Monster*> monsters;
+    for (int i = 0; i < 2; i++) {
+        monsters.push_back(zombieSample->clone());
+        monsters.push_back(skeletonSample->clone());
+    }
+    
+    for (auto m : monsters) {
+        m->print();
+        delete m;
+    }
+    delete zombieSample;
+    delete skeletonSample;
+    cout << endl;
+    
+    // 6. Проста фабрика
+    cout << "6. Проста фабрика (Simple Factory):" << endl;
+    AnimalFactory af;
+    Animal* a1 = af.create("dog");
+    Animal* a2 = af.create("cat");
+    
+    a1->sound();
+    a2->sound();
+    
+    delete a1;
+    delete a2;
+    
+    cout << "\n==== Програма завершена ====" << endl;
+    return 0;
+}
